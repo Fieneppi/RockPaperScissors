@@ -17,9 +17,9 @@ class Winner(Enum):
     draw = 0
 
 text_winners = {
-    Winner.draw: '',
-    Winner.computer: '',
-    Winner.player: ''
+    Winner.draw: 'DRAW',
+    Winner.computer: 'Computer won',
+    Winner.player: 'Player won'
 }
 
 text = {
@@ -30,6 +30,7 @@ text = {
     'player': 'Player'
 }
 
+text_choice = ['rock', 'paper', 'scissors']
 
 def welcome():
     print(text['welcome'])
@@ -39,7 +40,7 @@ def welcome():
 
 # rolls computer turn
 def computer_choice():
-    return random.choice(['rock', 'paper', 'scissors'])
+    return random.choice(text_choice)
 
 
 # clears player input from some shit and lower cases it
@@ -52,37 +53,36 @@ def clean_input():
 # shows status message at the end of the round
 # and returns value for score
 def round_end(player, computer, winner):
-    print(f'{player} VS {computer}. {winner} won!')
-    if winner == 'Computer':
-        return -1
-    else:
-        return 1
-
-
-def
+    print(f'{player} VS {computer}. {text_winners[winner]}!')
+    return winner.value
 
 
 def one_round():
     player_input = clean_input()
     computer_input = computer_choice()
+    while player_input not in text_choice:
+        # tell player they suck at typing
+        player_input = clean_input()
     if player_input == computer_input:
         print(f'{player_input} VS {computer_input}. DRAW!')
         return 0
     elif player_input == 'rock':
         if computer_input == 'paper':
-            return round_end(player_input, computer_input, text['Computer'])
+            return round_end(player_input, computer_input, Winner.computer)
         else:
-            return round_end(player_input, computer_input, text['Player'])
+            return round_end(player_input, computer_input, Winner.player)
     elif player_input == 'paper':
         if computer_input == 'scissors':
-            return round_end(player_input, computer_input, text['Computer'])
+            return round_end(player_input, computer_input, Winner.computer)
         else:
-            return round_end(player_input, computer_input, 'Player')
+            return round_end(player_input, computer_input, Winner.player)
     elif player_input == 'scissors':
         if computer_input == 'rock':
-            return round_end(player_input, computer_input, 'Computer')
+            return round_end(player_input, computer_input, Winner.computer)
         else:
-            return round_end(player_input, computer_input, 'Player')
+            return round_end(player_input, computer_input, Winner.player)
+    else:
+
 
 
 def game():
