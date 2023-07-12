@@ -1,12 +1,3 @@
-# should probably greet user and explain rules
-# should accept input from the user (think about input!)
-# should generate random?? response
-# should match input and response
-# should generate output string
-# match is 5 rolls
-# winner is the one with most wins out of 5
-# there can be draws
-
 import random
 from enum import Enum
 
@@ -16,22 +7,32 @@ class Winner(Enum):
     computer = -1
     draw = 0
 
+
 text_winners = {
     Winner.draw: 'DRAW',
     Winner.computer: 'Computer won',
     Winner.player: 'Player won'
 }
 
+# stores some of the strings
+# ideally, should store all the strings (if even better system won't be implemented)
 text = {
     'welcome': 'Welcome! This is a rock-paper-scissors game.',
-    'rules': 'Rules are simple: paper beats rock; rock beats scissors, scissors beat paper. The winner is chosen after 5 rounds.',
+    'rules': 'Rules are simple: paper beats rock; rock beats scissors, scissors beat paper. '
+             'The winner is chosen after 5 rounds.',
     'controls': 'Enter the name of an object play a round.',
     'computer': 'Computer',
-    'player': 'Player'
+    'player': 'Player',
+    'gwinner_draw': 'WHOA! It\'s a TOTAL draw!',
+    'gwinner_player': 'Congratulations! You\'ve WON',
+    'gwinner_computer': 'Uh-oh... It\'s not your lucky game. Try again!'
 }
 
+# stores valid computer and player choices
 text_choice = ['rock', 'paper', 'scissors']
 
+
+# prints out initial texts on application launch
 def welcome():
     print(text['welcome'])
     print(text['controls'])
@@ -60,9 +61,15 @@ def round_end(player, computer, winner):
 def one_round():
     player_input = clean_input()
     computer_input = computer_choice()
+
+    # spellcheck of cleaned input
+    # checks if player_input is one of these: 'rock', 'paper', 'scissors'
     while player_input not in text_choice:
-        # tell player they suck at typing
+        print('Choose one of the following: rock, paper or scissors!')
         player_input = clean_input()
+
+    # chooses the winner for the round based on input
+    # returns score adjustment: 0 for draw; 1 for player win, -1 for computer win
     if player_input == computer_input:
         print(f'{player_input} VS {computer_input}. DRAW!')
         return 0
@@ -81,20 +88,20 @@ def one_round():
             return round_end(player_input, computer_input, Winner.computer)
         else:
             return round_end(player_input, computer_input, Winner.player)
-    else:
 
 
-
+# game logic: 5 rounds played,
+# then winner is determined based on score
 def game():
     score = 0
     for game_round in range(1, 6):
         score += one_round()
     if score > 0:
-        print('Congratulations! You\'ve WON')
+        print(text['gwinner_player'])
     elif score < 0:
-        print('Uh-oh... It\'s not your lucky game. Try again!')
+        print(text['gwinner_computer'])
     else:
-        print('WHOA! It\'s a TOTAL draw!')
+        print(text['gwinner_draw'])
 
 
 if __name__ == '__main__':
