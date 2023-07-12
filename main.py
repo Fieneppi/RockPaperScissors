@@ -8,25 +8,40 @@ class Winner(Enum):
     draw = 0
 
 
-text_winners = {
+TEXT_WINNERS = {
     Winner.draw: 'DRAW',
     Winner.computer: 'Computer won',
     Winner.player: 'Player won'
 }
 
-# stores some of the strings
-# ideally, should store all the strings (if even better system won't be implemented)
-text = {
-    'welcome': 'Welcome! This is a rock-paper-scissors game.',
-    'rules': 'Rules are simple: paper beats rock; rock beats scissors, scissors beat paper. '
-             'The winner is chosen after 5 rounds.',
-    'controls': 'Enter the name of an object play a round.',
-    'computer': 'Computer',
-    'player': 'Player',
-    'gwinner_draw': 'WHOA! It\'s a TOTAL draw!',
-    'gwinner_player': 'Congratulations! You\'ve WON',
-    'gwinner_computer': 'Uh-oh... It\'s not your lucky game. Try again!'
+
+class UiText(Enum):
+    welcome = 0
+    rules = 1
+    controls = 2
+    computer = 3
+    player = 4
+    warning_input = 5
+    game_winner_draw = 6
+    game_winner_computer = 7
+    game_winner_player = 8
+    input_request = 9
+
+
+TEXT_UI = {
+    UiText.welcome: 'Welcome! This is a rock-paper-scissors game.',
+    UiText.rules: 'Rules are simple: paper beats rock; rock beats scissors, scissors beat paper. '
+                  'The winner is chosen after 5 rounds.',
+    UiText.controls: 'Enter the name of an object play a round.',
+    UiText.computer: 'Computer',
+    UiText.player: 'Player',
+    UiText.warning_input: 'Choose one of the following: rock, paper or scissors!',
+    UiText.game_winner_draw: 'WHOA! It\'s a TOTAL draw!',
+    UiText.game_winner_player: 'Congratulations! You\'ve WON',
+    UiText.game_winner_computer: 'Uh-oh... It\'s not your lucky game. Try again!',
+    UiText.input_request: 'Type in your choice for this round: ',
 }
+
 
 # stores valid computer and player choices
 text_choice = ['rock', 'paper', 'scissors']
@@ -34,19 +49,20 @@ text_choice = ['rock', 'paper', 'scissors']
 
 # prints out initial texts on application launch
 def welcome():
-    print(text['welcome'])
-    print(text['controls'])
-    print(text['rules'])
+    print(TEXT_UI[UiText.welcome])
+    print(TEXT_UI[UiText.rules])
+    print(TEXT_UI[UiText.controls])
 
 
 # rolls computer turn
 def computer_choice():
-    return random.choice(text_choice)
+    computer_roll = random.choice(text_choice)
+    return computer_roll
 
 
 # clears player input from some shit and lower cases it
 def clean_input():
-    player_input = input('Type in your choice for this round: ')
+    player_input = input(TEXT_UI[UiText.input_request])
     player_input.strip(' ,.')
     return player_input.casefold()
 
@@ -54,7 +70,7 @@ def clean_input():
 # shows status message at the end of the round
 # and returns value for score
 def round_end(player, computer, winner):
-    print(f'{player} VS {computer}. {text_winners[winner]}!')
+    print(f'{player} VS {computer}. {TEXT_WINNERS[winner]}!')
     return winner.value
 
 
@@ -65,7 +81,7 @@ def one_round():
     # spellcheck of cleaned input
     # checks if player_input is one of these: 'rock', 'paper', 'scissors'
     while player_input not in text_choice:
-        print('Choose one of the following: rock, paper or scissors!')
+        print(TEXT_UI[UiText.warning_input])
         player_input = clean_input()
 
     # chooses the winner for the round based on input
@@ -97,11 +113,11 @@ def game():
     for game_round in range(1, 6):
         score += one_round()
     if score > 0:
-        print(text['gwinner_player'])
+        print(TEXT_UI[UiText.game_winner_player])
     elif score < 0:
-        print(text['gwinner_computer'])
+        print(TEXT_UI[UiText.game_winner_computer])
     else:
-        print(text['gwinner_draw'])
+        print(TEXT_UI[UiText.game_winner_draw])
 
 
 if __name__ == '__main__':
